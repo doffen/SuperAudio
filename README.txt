@@ -1,0 +1,9 @@
+SuperAudio is a Superpowered Audio SDK wrapper for use in Cocos2d-x when building on Mac OSX, targeting iOS 8.0+, MacOS 10.10+ and Android 4.4+:
+
+SuperAudio is similar to AudioEngine (already included with Cocos2d-x) and provides no additional functionality.  The main reason to use this wrapper is to extend it with your own code additions in order to take advantage of the extensive audio features available in the Superpowered Audio SDK.  To extend the functionality of SuperAudio on iOS or OSX you will need to have a working knowledge of Objective-C (files are compiled using Objective-C++, which is a combination of C++ and Objective-C).  To extend the functionality of SuperAudio on Android you will need to have a working knowledge of Java and Gradle.  This is because Superpowered is mostly accessed via C++, but it also relies on some amount of Objective-C and Java coding.  The entire process for utilizing Superpowered SDK within Cocos2d-x is lengthy, but is fully documented in InstallingSuperAudio.rtf.  You should also study the comments in SuperpoweredAdvancedAudioPlayer.h, as well as the sample programs provided by Superpowered.
+
+NOTE:  SUPERPOWERED AND COCOS2D-X WILL NOT SUPPORT THIS SUPERAUDIO WRAPPER, AND I WILL OFFER ONLY LIMITED BUG-FIX  SUPPORT. YOU WILL NEED TO REGISTER WITH SUPERPOWERED AND ABIDE BY ITS LICENSING REQUIREMENTS.
+
+If you have a problem getting Superpowered SDK to work as expected, you will need to isolate the problem and confine your questions to issues only related to Superpowered SDK when contacting Superpowered support. It is better not to mention that you are using Cocos2d-x since they do not support it.
+
+SuperAudio has been tested using: Cocos2d-x v3.17 and Superpowered SDK v1.2.4B running on MacOS 10.13.6 with Xcode 10.1 and Android Studio 3.0.

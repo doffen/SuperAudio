@@ -1,0 +1,1 @@
+This file exists only to allow its folder to be created when copied.  Once it is copied to your project this file can be deleted.

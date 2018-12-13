@@ -1,0 +1,380 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;\f2\fnil\fcharset0 Menlo-Italic;
+\f3\fnil\fcharset0 Menlo-Bold;}
+{\colortbl;\red255\green255\blue255;\red255\green255\blue255;\red100\green56\blue32;\red196\green26\blue22;
+\red83\green101\blue121;\red0\green0\blue0;\red50\green109\blue116;\red36\green82\blue86;\red155\green35\blue147;
+\red15\green112\blue3;\red28\green0\blue207;\red109\green109\blue109;\red14\green110\blue109;\red0\green0\blue109;
+\red0\green0\blue254;}
+{\*\expandedcolortbl;;\csgenericrgb\c100000\c100000\c100000;\csgenericrgb\c39147\c22031\c12446;\csgenericrgb\c77000\c10200\c8600;
+\csgenericrgb\c32401\c39745\c47507;\csgenericrgb\c0\c0\c0;\csgenericrgb\c19418\c42935\c45455;\csgenericrgb\c13924\c32052\c33684;\csgenericrgb\c60759\c13753\c57628;
+\csgenericrgb\c5882\c43922\c1176;\csgenericrgb\c11000\c0\c81000;\csgenericrgb\c42745\c42745\c42745;\csgenericrgb\c5490\c43137\c42745;\csgenericrgb\c0\c0\c42745;
+\csgenericrgb\c0\c0\c99608;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
+\margl1440\margr1440\vieww17140\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs36 \cf0 Installing SuperAudio
+\fs24 \
+\
+Instructions for installing SuperAudio, the Superpowered Audio SDK wrapper for use in Cocos2d-x when building on Mac OSX, targeting iOS 8.0+, MacOS 10.10+ and Android 4.4+:\
+\
+SuperAudio is similar to AudioEngine (already included with Cocos2d-x) and provides no additional functionality.  The main reason to use this wrapper is to extend it with your own code additions in order to take advantage of the extensive audio features available in the Superpowered Audio SDK.  To extend the functionality of SuperAudio on iOS or OSX you will need to have a working knowledge of Objective-C (files are compiled using Objective-C++, which is a combination of C++ and Objective-C).  To extend the functionality of SuperAudio on Android you will need to have a working knowledge of Java and Gradle.  This is because Superpowered is mostly accessed via C++, but it also relies on some amount of Objective-C and Java coding.  The entire process for utilizing Superpowered SDK within Cocos2d-x is lengthy, but is fully documented here.  You should also study the comments in SuperpoweredAdvancedAudioPlayer.h, as well as the sample programs provided by Superpowered.\
+\
+NOTE:  SUPERPOWERED AND COCOS2D-X WILL NOT SUPPORT THIS SUPERAUDIO WRAPPER, AND I WILL OFFER ONLY LIMITED BUG-FIX  SUPPORT. YOU WILL NEED TO REGISTER WITH SUPERPOWERED AND ABIDE BY ITS LICENSING REQUIREMENTS.\
+\
+If you have a problem getting Superpowered SDK to work as expected, you will need to isolate the problem and confine your questions to issues only related to Superpowered SDK when contacting Superpowered support. It is better not to mention that you are using Cocos2d-x since they do not support it.\
+\
+SuperAudio has been tested using: Cocos2d-x v3.17 and Superpowered SDK v1.2.4B running on MacOS 10.13.6 with Xcode 10.1 and Android Studio 3.0.\
+\
+The following assumes you are starting a new project.  If you are adding to an existing project, you will need to adjust accordingly.\
+\
+
+\fs36 To start:
+\fs24 \
+\
+\pard\tx220\tx720\pardeftab593\li720\fi-720\pardirnatural\partightenfactor0
+\cf0 \cb2 	\'95	\cb1 Download and install Cocos2d-x, Superpowered SDK, Xcode and Android Studio on your Mac.\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx220\tx720\pardeftab593\li720\fi-720\pardirnatural\partightenfactor0
+\cf0 \cb2 	\'95	\cb1 In a Terminal window create a new Cocos2d-x project:  \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 cocos new <projectName> -p com.<yourCompany>.<projectName> -l cpp\
+\
+\pard\tx220\tx720\pardeftab593\li720\fi-720\pardirnatural\partightenfactor0
+\cf0 \cb2 	\'95	\cb1 Merge the entire contents of the SuperAudio folder into your new project using the finder as follows: select all 5 of SuperAudio's sub-folders, hold down the Option key and drag them into your new project's folder to make a copy of them.  Select "Merge" when asked what you want to do with the Classes, proj.android and Resources folders.\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx220\tx720\pardeftab593\li720\fi-720\pardirnatural\partightenfactor0
+\cf0 \cb2 	\'95	\cb1  Note:  The Sounds/ folder that is now at the top level of your project should hold the master copy of all the sounds you wish to use.  It is the holding folder from which you will get copies for iOS/Mac and for Android targets, since Superpowered requires that they be located in separate places for each target.  You can add your own audio files here as well, but their names should be all lower case with no spaces, for compatibility with Superpowered's Android requirements.\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx220\tx720\pardeftab593\li720\fi-720\pardirnatural\partightenfactor0
+\cf0 \cb2 	\'95	\cb1 Copy all the files and subfolders from Superpowered SDK's "Superpowered" subfolder to the Classes/super/ folder in your Cocos2d-x project.  Then move the files now located in Classes/super/AndroidIO/ up one folder into Classes/super/.  It is OK to remove from Classes/super all newly-copied files with ".a" extension except libSuperpoweredAndroidarmeabi-v7a.a, libSuperpoweredAudioIOS.a and libSuperpoweredAudioOSX.a, since all other .a files are not needed and are large.  You can also remove the large "Windows" folder from Classes/super/.\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx220\tx720\pardeftab593\li720\fi-720\pardirnatural\partightenfactor0
+\cf0 \cb2 	\'95	\cb1 Copy the files and folders within Superpowered SDK's "License" folder to your project's licenses/ folder. You must read and comply with the Superpowered SDK license agreement, which is more restrictive than the Cocos2d-x license (In the Superpowered SDK license see section 4.1(a)(1) "Free License Requirements").  The code for displaying the required animated Superpowered splash screen is already implemented in the code provided with this SuperAudio wrapper.\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+
+\fs36 For iOS and Mac OSX:\
+
+\fs24 \
+\pard\tx220\tx720\pardeftab593\li720\fi-720\pardirnatural\partightenfactor0
+\cf0 \cb2 	\'95	\cb1 In your project folder, make a copy of the entire Sounds/ folder and place it at Resources/Sounds/.\
+\cb2 \
+	\'95	\cb1 Open proj.ios_mac/<projectName>.xcodeproj using Xcode.  In your Project Info and Targets pages set the macOS Deployment Target to 10.10 at a minimum, and set the iOS Deployment Target to 8.0 at a minimum.  Build and run "<projectName>-desktop" for "My Mac" to make sure your new project can run the default HelloWorld program on your Mac.\
+\cb2 \
+	\'95	\cb1 In the Xcode Project Navigator, right click to "Add Files" under "Classes" and select the following files from your project's "Classes/super" folder, making sure that both the -Mobile and -Desktop targets are enabled: SuperSplashScene.h & .cpp, SuperAudio.h & .cpp, SuperAudioUtils.h & .cpp, SuperpoweredAdvancedAudioPlayer.h, SuperpoweredSimple.h.\
+\cb2 \
+	\'95	\cb1 Next, add the following files under "Classes", again from your project's "Classes/super" folder, but enabling only for the -Desktop target: SuperpoweredOSXAudioIO.h & .mm.\
+\cb2 \
+	\'95	\cb1 Then, add the following files under "Classes", again from your project's "Classes/super" folder, but enabling only for the -Mobile target: SuperpoweredIOSAudioIO.h & .mm.\
+\cb2 \
+	\'95	\cb1 IMPORTANT: Select SuperSplashScene.cpp, reveal the File Inspector in the rightmost window of Xcode, and change the "Type" to "Objective-C++ Source".  Then do the same for SuperAudio.cpp, so that this file is also compiled as objective-C++.\
+\cb2 \
+	\'95	\cb1 To add the sound resources to your project, click on "Resources" in the Project Navigator, right click to Add Files, and navigate to Resources/Sounds to include this entire subfolder, making sure to include it in both the -Mobile and -Desktop targets.\
+\cb2 \
+	\'95	\cb1 Similarly, add Resources/superpowered.mp4 to both -Mobile and -Desktop targets of your project.  This is the required Superpowered splash screen video.\
+\cb2 \
+	\'95	\cb1 To add the required frameworks and libraries to your project, click on your project name at the top of the Project navigator, then click on your " -desktop" target in the left side of the main window, then click on the General tab at the top and scroll to the bottom of the main window to see the "Linked Frameworks and Libraries" category.  Then click to select "Frameworks" in the Project navigator before clicking on the "+" sign at the bottom of the main window to make your additions.  You will be adding the following to your -desktop target: CoreAudio.framework, AudioUnit.framework, MediaPlayer.framework, CoreMedia.framework, and, using "Add Other...", the libSuperpoweredAudioOSX.a file located in your Classes/super/ folder.\
+\cb2 \
+	\'95	\cb1 Next, using a similar technique after selecting the -Mobile target, use "Add Other..." to add the libSuperpoweredAudioIOS.a file located in Classes/super/.  Then click on CoreMedia.framework and MediaPlayer.framework in the Project Navigator and enable -mobile Target Membership in the File Inspector (right window).\
+\cb2 \
+	\'95	\cb1 Again, after clicking on your project name at the top of the Project navigator, this time click on the "Build Settings" tab at the top of the main window.  For both the -mobile and the -desktop targets you need to change the "Library Search Paths" to the following: $(inherited) $(SRCROOT)/../Classes/super\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+
+\fs36 A few edits to Cocos2d-x sources to support SuperAudio on iOS, Mac and Android:\
+
+\fs24 \
+\pard\tx220\tx720\pardeftab593\li720\fi-720\pardirnatural\partightenfactor0
+\cf0 \cb2 	\'95	\cb1 Now that Xcode has been properly configured, we're ready to make some changes to the Cocos2d-x source code.  Open AppDellegate.cpp now to make these 5 changes:\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+  	1. Add these lines near the top of the file:\
+  
+\f1 \cf3 \cb2 #include \cf4 "SuperAudio.h"\cf3  
+\f2\i \cf5 // USE_SUPERPOWERED is defined here\
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+
+\f1\i0 \cf3  #if USE_SUPERPOWERED
+\f0 \cf0 \
+
+\f1 \cf3  #include \cf4 "SuperSplashScene.h"
+\f0 \cf0 \
+
+\f1 \cf3  #endif\
+
+\f0 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \cb1   	2. Add this to the end of ~AppDelegate():\
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+
+\f1 \cf3 \cb2  #if USE_SUPERPOWERED
+\f0 \cf0 \
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+
+\f1 \cf6     \cf7 SuperAudio\cf6 ::\cf8 end\cf6 ();
+\f0 \cf0 \
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+
+\f1 \cf3  #endif\
+
+\f0 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \cb1   	3. Change this near the end of applicationDidFinishLaunching():\
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+
+\f1 \cf3 \cb2  \cf6    
+\f3\b \cf9 auto
+\f1\b0 \cf6  scene = HelloWorld::createScene();
+\f0 \cf0 \
+
+\f1 \cf3  
+\f0 \cf0 \cb1 to this:
+\f1 \cf3 \cb2 \
+ #if USE_SUPERPOWERED
+\f0 \cf0 \
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+
+\f1 \cf6     
+\f3\b \cf9 auto
+\f1\b0 \cf6  scene = \cf7 SuperSplashScene\cf6 ::\cf8 createScene\cf6 ();
+\f0 \cf0 \
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+
+\f1 \cf3  #else
+\f0 \cf0 \
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+
+\f1 \cf6     
+\f3\b \cf9 auto
+\f1\b0 \cf6  scene = HelloWorld::createScene();
+\f0 \cf0 \
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+
+\f1 \cf3  #endif\
+
+\f0 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \cb1   	4. Add this to the end of applicationDidEnterBackground():\
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+
+\f1 \cf3 \cb2  #if USE_SUPERPOWERED
+\f0 \cf0 \
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+
+\f1 \cf6     \cf7 SuperAudio\cf6 ::\cf8 pauseAll\cf6 ();
+\f0 \cf0 \
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+
+\f1 \cf3  #endif\
+
+\f0 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \cb1   	5. Add this to the end of applicationWillEnterForeground():\
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+
+\f1 \cf3 \cb2  #if USE_SUPERPOWERED
+\f0 \cf0 \
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+
+\f1 \cf6     \cf7 SuperAudio\cf6 ::\cf8 resumeAll\cf6 ();
+\f0 \cf0 \
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+
+\f1 \cf3  #endif\
+
+\f0 \cf0 \
+\pard\tx220\tx720\pardeftab593\li720\fi-720\pardirnatural\partightenfactor0
+\cf0 	\'95	Next open HellowWorldScene.cpp to make these 2 changes to test SuperAudio:\
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+\cf0 \
+  	1. Add this near the top of the file:\
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+
+\f2\i \cf5  //#include "SimpleAudioEngine.h"
+\f0\i0 \cf0 \
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+
+\f1 \cf3  #include 
+\f3\b \cf10 \cb1 "SuperAudio.h"
+\f1\b0 \cf3 \cb2  
+\f2\i \cf5 // USE_SUPERPOWERED is defined here\
+
+\f0\i0 \cf0 \
+  	2. Add this near the end of init() just before the "return true;" statement:\
+
+\f1 \cf3 #ifdef USE_SUPERPOWERED
+\f0 \cf0  
+\f2\i \cf5 // start audio test
+\f0\i0 \cf0 \
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+
+\f1 \cf6     
+\f3\b \cf9 auto
+\f1\b0 \cf6  audioID = \cf7 SuperAudio\cf6 ::\cf8 open\cf6 (
+\f3\b \cf10 \cb1 "Sounds/nuyorica.m4a"
+\f1\b0 \cf6 \cb2 );
+\f0 \cf0 \
+
+\f1 \cf6     if (audioID >= 0) \cf7 SuperAudio\cf6 ::\cf8 playFromStart\cf6 (audioID);
+\f0 \cf0 \
+
+\f1 \cf6     
+\f2\i \cf5 // wait 4 seconds before playing another audio on top of first one
+\f0\i0 \cf0 \
+
+\f1 \cf6     sprite->\cf8 runAction\cf6 (\cf7 Sequence\cf6 ::\cf8 create\cf6 (\cf7 DelayTime\cf6 ::\cf8 create\cf6 (\cf11 4\cf6 ), \cf7 CallFunc\cf6 ::\cf8 create\cf6 ([=]() \{
+\f0 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f2\i \cf12 \cb1         // safely play last 30 seconds of the track\
+
+\f1\i0 \cf13         SuperAudio\cf0 ::open(
+\f3\b \cf10 "Sounds/space.mp3"
+\f1\b0 \cf0 , 
+\f3\b \cf14 false
+\f1\b0 \cf0 , \cf15 0.5f\cf0 , 
+\f3\b \cf14 true
+\f1\b0 \cf0 , [=](
+\f3\b \cf14 int 
+\f1\b0 \cf0 id, 
+\f3\b \cf14 bool 
+\f1\b0 \cf0 isSuccess) \{\
+            
+\f3\b \cf14 if 
+\f1\b0 \cf0 (isSuccess) \{ 
+\f2\i \cf12 // now safe to call SuperAudio::getDuration(id)\
+                
+\f3\i0\b \cf14 auto 
+\f1\b0 \cf0 duration = \cf13 SuperAudio\cf0 ::getDuration(id);\
+                
+\f3\b \cf14 if 
+\f1\b0 \cf0 (duration >= \cf15 30\cf0 ) \{\
+                    \cf13 SuperAudio\cf0 ::setCurrentTime(id, duration-\cf15 30\cf0 ); 
+\f2\i \cf12 // play last 30 seconds of the track\
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+
+\f1\i0 \cf6 \cb2                     \cf7 SuperAudio\cf6 ::\cf8 resume\cf6 (id);
+\f0 \cf0 \
+
+\f1 \cf6                 \}
+\f0 \cf0 \
+
+\f1 \cf6             \} 
+\f3\b \cf9 else
+\f1\b0 \cf6  \{
+\f0 \cf0 \
+
+\f1 \cf6                 
+\f2\i \cf5 // Failed to load sound file
+\f0\i0 \cf0 \
+
+\f1 \cf6             \}
+\f0 \cf0 \
+
+\f1 \cf6         \});
+\f0 \cf0 \
+
+\f1 \cf6     \}), 
+\f3\b \cf9 nullptr
+\f1\b0 \cf6 ));
+\f0 \cf0 \
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+
+\f1 \cf3 #endif\
+
+\f0 \cf0 \
+\pard\tx220\tx720\pardeftab593\li720\fi-720\pardirnatural\partightenfactor0
+\cf0 	\'95	You are now ready to test SuperPowered for iOS and Mac using Xcode.\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+
+\fs36 \cf0 For targeting Android:\
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+
+\fs24 \cf0 \
+\pard\tx220\tx720\pardeftab593\li720\fi-720\pardirnatural\partightenfactor0
+\ls1\ilvl0\cf0 {\listtext	\uc0\u8226 	}Import proj.android/build.gradle into Android Studio.\
+\pard\tx720\pardeftab593\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx220\tx720\pardeftab593\li720\fi-720\pardirnatural\partightenfactor0
+\cf0 	\'95	Edit proj.android/gradle.properties to change PROP_MIN_SDK_VERSION from 14 to 19 or higher.  Also add the line: "PROP_APP_PLATFORM=19" (or higher than 19).\
+\
+	\'95	In order to allow our new Java code to build properly we'll need to edit proj.android/app/build.gradle by adding the following line within the "dependencies" braces near the end of the file:\
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+\cf0     implementation 'com.android.support:appcompat-v7:27.1.1'\
+\
+\pard\tx220\tx720\pardeftab593\li720\fi-720\pardirnatural\partightenfactor0
+\cf0 	\'95	proj.android/app/jni/Android.mk is the file where you list all the C++ programs in your Android project.  This file also requires extensive changes to support Superpowered SDK on Android.  In your jni/ folder you will see Android.mk (your current version of the file) and Android.supermk (the Cocos2d-x v3.17 file, modified as required for building SuperAudio with SuperPowered API).  For your reference, the original Cocos2d-x version 3.17 of Android.mk is located next to it, named Android.v317mk.  If you have previously changed Android.mk for your project, you should carefully merge Android.supermk with your own project's Android.mk, taking care to list all the LOCAL_SRC_FILES in your project as well as the files required for SuperAudio.  Name the merged file Android.mk.  When merging files, be sure that you do not include any 'tab' characters, as they will not be interpreted as whitespace and will cause the build to fail.\
+\
+	\'95	In order to support Superpowered SDK on Android, some new Java code needs to be included in your project.  Open your project's copy of proj.android/app/src/org/cocos2dx/cpp/AppActivity.java and make the following 4 changes to this file:\
+\
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+\cf0  	1. Import these files at the top:\
+import android.content.Context;\
+import android.content.res.AssetFileDescriptor;\
+import android.media.AudioManager;\
+import android.support.annotation.Keep;\
+import android.util.Log;\
+import java.lang.reflect.Field;\
+import java.util.*;\
+import com.yourCompany.projectName.R; // to prevent compile error replace with your own project identifier!!\
+\
+ 	2. Add tthese declarations at the beginning of the AppActivity class:\
+    private static String samplerateString = null;\
+    private static String buffersizeString = null;\
+    private static String APKPath = null;\
+    private static List<String> names = new ArrayList<String>(24);\
+    private static List<String> packedVals = new ArrayList<String>(24);\
+\
+ 	3. Add these lines to the end of onCreate():\
+        AudioManager audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);\
+        if (audioManager != null) \{\
+            samplerateString = audioManager.getProperty(AudioManager.PROPERTY_OUTPUT_SAMPLE_RATE);\
+            buffersizeString = audioManager.getProperty(AudioManager.PROPERTY_OUTPUT_FRAMES_PER_BUFFER);\
+            APKPath = getPackageResourcePath();\
+        \}\
+        // read all finlenames in raw folder and save their APK offset & length\
+        Field[] fields = R.raw.class.getFields();\
+        for (int count=0; count < fields.length; count++) \{\
+            names.add(fields[count].getName()); // add file name to "names"\
+            try \{\
+                AssetFileDescriptor fd = getResources().openRawResourceFd(fields[count].getInt(fields[count]));\
+                // add offset and length (packed into a string) to "packedVals" to return via getPackedString()\
+                packedVals.add(String.format("%d %d", (int)fd.getStartOffset(), (int)fd.getLength()));\
+            \} catch (IllegalAccessException ignored ) \{\}\
+         \}\
+\
+ 	4. Add these methods to the class:\
+    @Keep\
+    public static int getSampleRate() \{\
+        Log.d("AppActivity", "In getSampleRate");\
+        if (samplerateString == null) samplerateString = "48000";\
+        return Integer.parseInt(samplerateString);\
+    \}\
+    @Keep\
+    public static int getBuffersize() \{\
+        if (buffersizeString == null) buffersizeString = "480";\
+        return Integer.parseInt(buffersizeString);\
+    \}\
+    @Keep\
+    public static String getAPKPath() \{\
+        return APKPath;\
+    \}\
+    @Keep\
+    public static String getPackedString(String rawName) \{\
+        int idx = names.indexOf(rawName);\
+        return (idx < 0) ? "" : packedVals.get(idx); // returns position and offset in string, given name in raw dir\
+    \}\
+\
+\pard\tx220\tx720\pardeftab593\li720\fi-720\pardirnatural\partightenfactor0
+\cf0 	\'95	The Android version of Superpowered SDK requires that all audio files be located NOT in Resources/Sounds/ (where iOS and Mac builds find them), but instead at a special location under proj.android/.  Any sound files located in Resources/Sounds/ will take up unnecessary room in your Andrid distributables.  Therefore, before building for Android you should Move-to-Trash the entire Sounds/ folder located below Resources/.  Then copy all the files within your project's Sounds/ holding folder (at the top level of your project) to proj.android/app/src/main/res/raw/.  Note that your C++ source code should still say that the file path to these sound files is at "Sounds/...", and the Android build will ignore this file path and request the files instead from "res/raw/..." where they now live.\
+\
+	\'95	Once you have completed all these configuration changes, in Android Studio execute: Tools, Android, Sync Project with Gradle Files.  You are now able to test Superpowered for Android using Android Studio.\
+}
