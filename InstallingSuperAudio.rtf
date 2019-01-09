@@ -25,7 +25,7 @@ NOTE:  SUPERPOWERED AND COCOS2D-X WILL NOT SUPPORT THIS SUPERAUDIO WRAPPER, AND 
 \
 If you have a problem getting Superpowered SDK to work as expected, you will need to isolate the problem and confine your questions to issues only related to Superpowered SDK when contacting Superpowered support. It is better not to mention that you are using Cocos2d-x since they do not support it.\
 \
-SuperAudio has been tested using: Cocos2d-x v3.17 and Superpowered SDK v1.2.4B running on MacOS 10.13.6 with Xcode 10.1 and Android Studio 3.0.\
+SuperAudio has been tested using: Cocos2d-x v3.17 and v3.17.1, Superpowered SDK v1.2.4B running on MacOS 10.13.6 with Xcode 10.1 and Android Studio 3.0.\
 \
 The following assumes you are starting a new project.  If you are adding to an existing project, you will need to adjust accordingly.\
 \
@@ -91,7 +91,7 @@ The following assumes you are starting a new project.  If you are adding to an e
 
 \fs24 \
 \pard\tx220\tx720\pardeftab593\li720\fi-720\pardirnatural\partightenfactor0
-\cf0 \cb2 	\'95	\cb1 Now that Xcode has been properly configured, we're ready to make some changes to the Cocos2d-x source code.  Open AppDellegate.cpp now to make these 5 changes:\
+\cf0 \cb2 	\'95	\cb1 Now that Xcode has been properly configured, we're ready to make some changes to the Cocos2d-x source code.  Open AppDelegate.cpp now to make these 5 changes:\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
   	1. Add these lines near the top of the file:\
@@ -190,7 +190,7 @@ The following assumes you are starting a new project.  If you are adding to an e
 
 \f0 \cf0 \
 \pard\tx220\tx720\pardeftab593\li720\fi-720\pardirnatural\partightenfactor0
-\cf0 	\'95	Next open HellowWorldScene.cpp to make these 2 changes to test SuperAudio:\
+\cf0 	\'95	Next open HelloWorldScene.cpp to make these 2 changes to test SuperAudio:\
 \pard\tx593\pardeftab593\pardirnatural\partightenfactor0
 \cf0 \
   	1. Add this near the top of the file:\
@@ -304,19 +304,41 @@ The following assumes you are starting a new project.  If you are adding to an e
 \pard\tx720\pardeftab593\pardirnatural\partightenfactor0
 \cf0 \
 \pard\tx220\tx720\pardeftab593\li720\fi-720\pardirnatural\partightenfactor0
-\cf0 	\'95	Edit proj.android/gradle.properties to change PROP_MIN_SDK_VERSION from 14 to 19 or higher.  Also add the line: "PROP_APP_PLATFORM=19" (or higher than 19).\
+\cf0 	\'95	Edit proj.android/gradle.properties to change PROP_MIN_SDK_VERSION to 19 or higher.  Also add the line: "PROP_APP_PLATFORM=19" (or higher than 19).  Then make sure to set "PROP_BUILD_TYPE=nkd-build".\
 \
 	\'95	In order to allow our new Java code to build properly we'll need to edit proj.android/app/build.gradle by adding the following line within the "dependencies" braces near the end of the file:\
 \pard\tx593\pardeftab593\pardirnatural\partightenfactor0
 \cf0     implementation 'com.android.support:appcompat-v7:27.1.1'\
 \
 \pard\tx220\tx720\pardeftab593\li720\fi-720\pardirnatural\partightenfactor0
-\cf0 	\'95	proj.android/app/jni/Android.mk is the file where you list all the C++ programs in your Android project.  This file also requires extensive changes to support Superpowered SDK on Android.  In your jni/ folder you will see Android.mk (your current version of the file) and Android.supermk (the Cocos2d-x v3.17 file, modified as required for building SuperAudio with SuperPowered API).  For your reference, the original Cocos2d-x version 3.17 of Android.mk is located next to it, named Android.v317mk.  If you have previously changed Android.mk for your project, you should carefully merge Android.supermk with your own project's Android.mk, taking care to list all the LOCAL_SRC_FILES in your project as well as the files required for SuperAudio.  Name the merged file Android.mk.  When merging files, be sure that you do not include any 'tab' characters, as they will not be interpreted as whitespace and will cause the build to fail.\
+\cf0 	\'95	proj.android/app/jni/Android.mk is the file where you list all the C++ programs in your Android project.  This file also requires 4 changes to support Superpowered SDK on Android. Make sure you preserve all the LOCAL_SRC_FILES in your project when you add the files required for SuperAudio.  When editing files, be sure that you do not include any 'tab' characters, as they will not be interpreted as whitespace and may cause the build to fail.\
 \
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+\cf0  	1.  Insert these lines immediately following the first line, after the LOCAL_PATH := line:\
+SUPERPOWERED_PATH := $(LOCAL_PATH)/../../../Classes/super\
+include $(CLEAR_VARS)\
+LOCAL_MODULE := Superpowered\
+LOCAL_SRC_FILES := $(SUPERPOWERED_PATH)/libSuperpoweredAndroidarmeabi-v7a.a\
+include $(PREBUILT_STATIC_LIBRARY)\
+\
+ 	2.  Add these LOCAL_SRC_FILES lines after HellowWorldScene.cpp (remembering to add the trailing "\\" to this line):\
+                   $(LOCAL_PATH)/../../../Classes/super/SuperAudio.cpp \\\
+                   $(LOCAL_PATH)/../../../Classes/super/SuperSplashScene.cpp \\\
+                   $(LOCAL_PATH)/../../../Classes/super/SuperAudioUtils.cpp \\\
+                   $(LOCAL_PATH)/../../../Classes/super/SuperpoweredAndroidAudioIO.cpp\
+\
+ 	3.  Add these lines to the end of LOCAL_C_INCLUDES := line (remembering to add the trailing "\\" to this line):\
+                    $(LOCAL_PATH)/../../../Classes/super \\\
+                    $(LOCAL_PATH)/../../../cocos2d/cocos/platform/android/jni\
+ \
+ 	4.  Add this line to the end of LOCAL_STATIC_LIBRARIES := line (remembering to add the trailing "\\" to this line):\
+                          Superpowered\
+\pard\tx220\tx720\pardeftab593\li720\fi-720\pardirnatural\partightenfactor0
+\cf0  \
 	\'95	In order to support Superpowered SDK on Android, some new Java code needs to be included in your project.  Open your project's copy of proj.android/app/src/org/cocos2dx/cpp/AppActivity.java and make the following 4 changes to this file:\
 \
 \pard\tx593\pardeftab593\pardirnatural\partightenfactor0
-\cf0  	1. Import these files at the top:\
+\cf0  	1. Import these files at the top (while fixing your project name in the last line):\
 import android.content.Context;\
 import android.content.res.AssetFileDescriptor;\
 import android.media.AudioManager;\
@@ -374,7 +396,7 @@ import com.yourCompany.projectName.R; // to prevent compile error replace with y
     \}\
 \
 \pard\tx220\tx720\pardeftab593\li720\fi-720\pardirnatural\partightenfactor0
-\cf0 	\'95	The Android version of Superpowered SDK requires that all audio files be located NOT in Resources/Sounds/ (where iOS and Mac builds find them), but instead at a special location under proj.android/.  Any sound files located in Resources/Sounds/ will take up unnecessary room in your Andrid distributables.  Therefore, before building for Android you should Move-to-Trash the entire Sounds/ folder located below Resources/.  Then copy all the files within your project's Sounds/ holding folder (at the top level of your project) to proj.android/app/src/main/res/raw/.  Note that your C++ source code should still say that the file path to these sound files is at "Sounds/...", and the Android build will ignore this file path and request the files instead from "res/raw/..." where they now live.\
+\cf0 	\'95	The Android version of Superpowered SDK requires that all audio files be located NOT in Resources/Sounds/ (where iOS and Mac builds find them), but instead at a special location under proj.android/.  Any sound files located in Resources/Sounds/ will take up unnecessary room in your Andrid distributables.  Therefore, before building for Android you should Move-to-Trash the entire Sounds/ folder located below Resources/.  Then copy all the files within your project's Sounds/ holding folder (at the top level of your project) to proj.android/app/src/main/res/raw/.  Note that your C++ source code should still say that the file path to these sound files is at "Sounds/...", and the Android build will ignore this file path and request the files instead from "res/raw/..." where they now live.  You may delete the "deleteme.txt" file by moving to trash.\
 \
 	\'95	Once you have completed all these configuration changes, in Android Studio execute: Tools, Android, Sync Project with Gradle Files.  You are now able to test Superpowered for Android using Android Studio.\
 }
