@@ -6,4 +6,4 @@ NOTE:  SUPERPOWERED AND COCOS2D-X WILL NOT SUPPORT THIS SUPERAUDIO WRAPPER, AND 
 
 If you have a problem getting Superpowered SDK to work as expected, you will need to isolate the problem and confine your questions to issues only related to Superpowered SDK when contacting Superpowered support. It is better not to mention that you are using Cocos2d-x since they do not support it.
 
-SuperAudio has been tested using: Cocos2d-x v3.17 and v3.17.1, Superpowered SDK v1.2.4B running on MacOS 10.13.6 with Xcode 10.1 and Android Studio 3.0.
+SuperAudio has been tested using: Cocos2d-x v3.17 and v3.17.1, Superpowered SDK v1.2.4B and v1.3.1, running on MacOS 10.13.6 with Xcode 10.1 and Android Studio 3.0.

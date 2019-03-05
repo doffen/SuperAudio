@@ -197,9 +197,14 @@ private:
     static bool outputProcessing(void *clientdata, float **buffers, short int *buffer, unsigned int numberOfSamples, unsigned int samplerate); // for all platforms
     
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+// for Superpowered v1.2.4x
     static bool audioProcessing(void *clientdata, float **buffers, unsigned int unusedInputChannels, unsigned int unusedOutputChannels, unsigned int numberOfSamples, unsigned int samplerate, uint64_t unusedHostTime) {
         return outputProcessing(clientdata, buffers, nullptr, numberOfSamples, samplerate);
     };
+// for Superpowered v1.3.1
+    static bool audioProcessing(void *clientdata, float **inputBuffers, unsigned int unusedInputChannels, float **outputBuffers, unsigned int unusedOutputChannels, unsigned int numberOfSamples, unsigned int samplerate, unsigned long long unusedHostTime) {
+        return outputProcessing(clientdata, outputBuffers, nullptr, numberOfSamples, samplerate);
+}
 #endif
 #if CC_TARGET_PLATFORM == CC_PLATFORM_MAC
     static bool audioProcessing (void *clientdata, float **unusedInputBuffers, unsigned int unusedInputChannels, float **buffers, unsigned int unusedOutputChannels, unsigned int numberOfSamples, unsigned int samplerate, uint64_t unusedHostTime) {
